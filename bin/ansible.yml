@@ -65,8 +65,7 @@
 #        device: /dev/vdb
 #        number: 1
 #        state: present
-#        fs_type: ext4
-	    
+#        fs_type: ext4    
     - name: install nfs-utils
       yum: name=nfs-utils state=latest
 
@@ -221,7 +220,7 @@
         state: present
         name: mystack
         compose:
-          - /docker-compose.yml
+          - ./docker-compose.yml
           
 #8th copy the backup shell script and run a cron job
 - name: Run a cron job for database backup
@@ -231,24 +230,24 @@
   tasks:
     - name: Create database backup directory if it does not exist
       file:
-	path: /home/backups
-	state: directory
+        path: /home/backups
+        state: directory
 	owner: centos
-	group: centos
-	mode: '0775'
+        group: centos
+        mode: '0775'
 	    
     - name: Copy the shell script
       ansible.builtin.copy:
-	 src: db-backup.sh
-	 dest: /db-backup.sh
-	 mode: '655'
+         src: db-backup.sh
+         dest: /db-backup.sh
+         mode: '655'
   	
     - name: run a backup at 1:00 AM . Creates an entry like "0 1 * * ./db-backup.sh"
       ansible.builtin.cron:
-	 name: "database backup"
-	 minute: "0"
-	 hour: "1"
-	 job: "/db-backup.sh"
+         name: "database backup"
+         minute: "0"
+         hour: "1"
+         job: "/db-backup.sh"
 
 
 
