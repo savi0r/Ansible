@@ -41,7 +41,9 @@ Because CM systems define lots of ways to segregate clients into categories, the
 *Ansible uses no daemons at all (other than sshd), which is an appealing simplification. Configuration runs happen when an administrator (or cron job) on the server runs the ansible-playbook command. ansible-playbook executes the appropriate remote commands over SSH, leaving no trace of its presence on the client machine after configuration has completed. The only requirements for client machines are that they be accessible through SSH and have Python 2 installed. Both ansible-playbooks and inventories are written in YML.*
 
 <h2>Hands on project:</h2>
+
 ![project](img/project.jpeg)
+
 Use Nginx for as your webserver
 for internal communication use an internal network
 use a docker file for making your docker image 
