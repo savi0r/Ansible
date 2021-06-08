@@ -232,22 +232,22 @@
       file:
         path: /home/backups
         state: directory
-	owner: centos
+        owner: centos
         group: centos
         mode: '0775'
-	    
+	
     - name: Copy the shell script
       ansible.builtin.copy:
          src: db-backup.sh
          dest: /db-backup.sh
          mode: '655'
-  	
+	 
     - name: run a backup at 1:00 AM . Creates an entry like "0 1 * * ./db-backup.sh"
       ansible.builtin.cron:
          name: "database backup"
          minute: "0"
          hour: "1"
-         job: "/db-backup.sh"
+         job: "./db-backup.sh"
 
 
 
