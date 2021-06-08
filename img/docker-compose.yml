@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+      
+     environment:
+       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD_FILE: /run/secrets/db_password
+     secrets:
+       - db_root_password
+       - db_password
+      
+     deploy: 
+       placement:
+         constraints: [node.labels.database == true]
+
+   wordpress:
+   
+     image: wordpress:5.6
+    
+     ports:
+       - "9000:80"
+     
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
+     volumes:
+       - /mnt/web_storage:/var/www/html
+     secrets:
+       - db_password
+      
+     depends_on:
+       - db
+     deploy:
+       mode: replicated
+       
+       replicas: 2
+      
+       placement:
+         constraints: [node.labels.wordpress == true]
+   
+   blog:
+    image: 1234569517/server3
+    ports:
+      - "8001:8443"
+      - "8002:8080"
+    deploy: 
+       placement:
+         constraints: [node.labels.blog == true]
+
+   mag:
+    image: 1234569517/server3
+    ports:
+      - "8003:8443"
+      - "8004:8080"
+    deploy: 
+       placement:
+         constraints: [node.labels.mag == true]
+
+   dispatcher:
+    image: 1234569517/dispatcher
+    ports:
+      - "443:8443"
+    deploy: 
+       placement:
+         constraints: [node.labels.dispatcher == true]
+
+
+secrets:
+   db_password:
+     file: db_password.txt
+   db_root_password:
+     file: db_root_password.txt
+
+volumes:
+    db_data:
+
