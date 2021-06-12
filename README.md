@@ -131,7 +131,11 @@ location = /mag {
         }
 ```
 
+Finally you can run the project by running the ansible playbook
 
+```
+ansible-playbook playbook.yml
+```
 
 
 
